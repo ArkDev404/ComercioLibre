@@ -79,7 +79,7 @@
     <script src="assets/js/sweetalert.js"></script>
 
     <!-- funciones -->
-    <script src="controllers/UsuariosControlador.js"></script>
+    <script src="controllers/loginControlador.js"></script>
 
   </body>
 </html>

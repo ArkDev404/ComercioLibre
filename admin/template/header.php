@@ -15,6 +15,7 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/paper-bootstrap-wizard.css">
     <!--Custom style.css-->
     <link rel="stylesheet" href="assets/css/quicksand.css">
     <link rel="stylesheet" href="assets/css/style.css">

@@ -1,10 +1,10 @@
-$(() => {
+$( () => {
     
-    document.getElementById("insertUsuario").addEventListener('submit', (e) => {
+    document.getElementById("loginForm").addEventListener('submit', (e) => {
 
         e.preventDefault()
 
-        let loginForm = document.getElementById("insertUsuario")
+        let loginForm = document.getElementById("loginForm")
         let data = new FormData(loginForm)
 
         fetch('models/usuarios.php', {
@@ -14,7 +14,7 @@ $(() => {
         .then( response => response.json() )
         .then( data => {
             if (data.resp == "OK") {
-                swal('Operación exitosa!', data.message, 'success')
+                swal('¡Acceso Correcto!', 'Redirigiendo...', 'success')
                 setTimeout(() => {
                     window.location.href = data.url;
                 }, 2000)
@@ -25,4 +25,4 @@ $(() => {
 
     })
 
-});
+})

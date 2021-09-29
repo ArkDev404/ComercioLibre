@@ -1,11 +1,7 @@
 
 
             </div>
-        </div>
 
-        <!--Main Content-->
-
-    </div>
 
     <!--Page Wrapper-->
 
@@ -31,9 +27,11 @@
     <!--Custom Js Script-->
     <script src="assets/js/custom.js"></script>
     <!--Custom Js Script-->
-        <!--Paper bootstrap wizard-->
-        <script src="assets/js/jquery.bootstrap.wizard.js"></script>
-        <script src="assets/js/paper-bootstrap-wizard.js"></script>
-        <script src="assets/js/jquery.validate.min.js"></script>
+    <!--Paper bootstrap wizard-->
+    <script src="assets/js/jquery.bootstrap.wizard.js"></script>
+    <script src="assets/js/paper-bootstrap-wizard.js"></script>
+    <script src="assets/js/jquery.validate.min.js"></script>
+
+    <script src="controllers/UsuariosControlador.js"></script>
   </body>
 </html>

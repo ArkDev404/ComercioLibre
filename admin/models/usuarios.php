@@ -27,7 +27,7 @@
                 $exists = $stmt -> fetch();
     
                 if ($exists) {
-                    if ($contraseña == $contra) {
+                    if (password_verify($contraseña,$contra)) {
     
                         if ($activo == "1") {
                          
@@ -83,3 +83,70 @@
 
     }
 
+    if ($_POST["operacion"] == "insertar") {
+
+        $nombre      = $_POST["nombre"];
+        $apaterno    = $_POST["apaterno"];
+        $amaterno    = $_POST["amaterno"];
+        $cumpleanios = $_POST["cumpleanios"];
+        $correo      = $_POST["correo"];
+        $tipo        = $_POST["tipo"];
+        $contrasena  = $_POST["contrasena"];
+        $activo = 1;
+        
+        $directorio = "../assets/img/usuarios/";
+
+        // Crea el directo de que no exista
+        if (!is_dir($directorio)) {
+            mkdir($directorio, 0755,true);
+        }
+
+        // Mover la imagen de la ruta temporal a una ruta fisica especifica
+        if (move_uploaded_file($_FILES['foto']['tmp_name'],$directorio . $_FILES['foto']['name'])) {
+            $imagen_url = $_FILES['foto']['name'];
+        } else {
+            $response = array(
+                'resp' => error_get_last()
+            );
+        }
+
+        
+        $opciones = array(
+            'cost' => 12
+        );
+
+        $encriptada = password_hash($contrasena,PASSWORD_BCRYPT, $opciones);
+
+        try {
+            $stmt = $conn -> prepare("Insert into Usuarios (Nombre, ApellidoPaterno, ApellidoMaterno, Correo, Contraseña, FechaCumpleaños, Activo, foto, idTipo)
+                                    values(?, ?, ?, ?, ?, ?, ?, ?, ?); ");
+
+             $stmt->execute([$nombre, $apaterno, $amaterno, $correo, $encriptada, $cumpleanios, $activo, $imagen_url, $tipo]);
+     
+             $id_inserted = $conn->lastInsertId();
+     
+             if($id_inserted != 0) {
+                 $response = array(
+                     'resp' => 'OK',
+                     'message' => "Se ha insertado exitosamente",
+                     'url' => "lista-usuarios.php"
+                 );
+             } else {
+                 $response = array(
+                     'resp' => 'Error',
+                     'message' => "Hubo un error al intentar insertar el usuario",
+                     'url' => "index.php"
+                 );
+             }
+     
+        } catch (Exception $e) {
+         $response = array(
+             'resp' => 'Error',
+             'message' => $e,
+             'url' => "index.php"
+         );
+        }
+        
+        die(json_encode($response));
+    }
+    

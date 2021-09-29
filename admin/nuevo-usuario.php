@@ -11,7 +11,7 @@
                     <div class="col-sm-12">
                         <!--Default elements-->
                         <div class="mb-1 p-3 button-container bg-white border shadow-sm wizard-card">
-                            <form class="form-horizontal mt-4 mb-5">
+                            <form id="insertUsuario" enctype="multipart/form-data" class="form-horizontal mt-4 mb-5">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <h6 class="mb-2"> <i class="fas fa-address-book h4"> </i> Información General</h6>
@@ -27,13 +27,18 @@
                                             <input class="form-control" name="amaterno" type="text" required>
                                             <label for="">Apellido Materno</label>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="">Fecha de Cumpleaños</label>
+                                            <input class="form-control" name="cumpleanios" type="date" required>
+                                        </div>
                                     </div>
+
 
                                     <div class="col-sm-4">
                                         <h6 class="mb-5"> <i class="fas fa-image h4"> </i> Foto de Perfil</h6>
                                         <div class="picture-container">
-                                            <div class="picture">
-                                                <img src="assets/img/default-avatar.jpg" class="picture-src img-fluid rounded-circle" id="wizardPicturePreview" width="150px" title="" />
+                                            <div class="picture" style="height: 200px; width:200px;">
+                                                <img src="assets/img/default-avatar.jpg" class="picture-src img-fluid rounded-circle" id="wizardPicturePreview" title="" />
                                                 <input type="file" id="wizard-picture" name="foto" accept="image/*">
                                             </div>
                                             <h6>Elige una foto</h6>
@@ -63,12 +68,12 @@
                                 </div>
 
                                 <div class="text-right">
+                                    <input type="hidden" name="operacion" value="insertar">
                                     <button class="btn btn-theme" type="submit">Registrar</button>
                                 </div>
                                 
 
                             </form>      
-
 
 
                     </div>
