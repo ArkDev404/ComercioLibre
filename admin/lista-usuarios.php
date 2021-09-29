@@ -23,17 +23,41 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th>1</th>
-                                        <th>Ray Garcia Gonzalez</th>
-                                        <th>ray@comerciolibre.com</th>
-                                        <th>Administrador</th>
-                                        <th><img src="assets/img/client-img4.png" alt=""></th>
-                                        <th>
-                                            <button class="btn btn-secondary"><i class="fa fa-edit"></i></button>
-                                            <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                        </th>
-                                    </tr>
+                                    <?php
+
+                                        include "config/conexion.php";
+
+                                        try {
+                                            $query = "Select idUsuario,concat_ws(' ', U.nombre, apellidopaterno, apellidomaterno) as nombre, correo, TU.nombre as tipo, contraseña, U.activo, foto 
+                                                    from Usuarios U inner join TipoUsuarios TU
+                                                    on U.idTipo = TU.idTipo
+                                                    order by idUsuario asc";
+                                            $result = $conn->query($query);
+                                            $usuarios = $result->fetchAll(PDO::FETCH_OBJ);
+
+                                            // echo "<pre>";
+                                            // var_dump($usuarios);
+                                            // echo "</pre>";
+
+                                            foreach($usuarios as $usuario){
+                                                echo "<tr>
+                                                        <th>$usuario->idusuario</th>
+                                                        <th>$usuario->nombre</th>
+                                                        <th>$usuario->correo</th>
+                                                        <th>$usuario->tipo</th>
+                                                        <th><img class='rounded-circle' width='60px' src='assets/img/$usuario->foto' alt=''></th>
+                                                        <th>
+                                                            <a href='editar-usuario.php?id=$usuario->idusuario' class='btn btn-warning'><i class='fa fa-edit'></i></a>
+                                                           
+                                                        </th>
+                                                    </tr>";
+                                            }
+
+                                        } catch (\Throwable $th) {
+                                            //throw $th;
+                                        }
+                                    
+                                    ?>
                                 </tbody>
                                 <tfoot class="bg-theme">
                                     <tr>

@@ -149,4 +149,102 @@
         
         die(json_encode($response));
     }
+
+    if ($_POST["operacion"] == "actualizar") {
+
+        $id          = $_POST["id"];
+        $nombre      = $_POST["nombre"];
+        $apaterno    = $_POST["apaterno"];
+        $amaterno    = $_POST["amaterno"];
+        $cumpleanios = $_POST["cumpleanios"];
+        $correo      = $_POST["correo"];
+        $tipo        = $_POST["tipo"];
+        $contrasena  = $_POST["contrasena"];
+        $activo = 1;
+        
+        $directorio = "../assets/img/usuarios/";
+
+        // Crea el directo de que no exista
+        if (!is_dir($directorio)) {
+            mkdir($directorio, 0755,true);
+        }
+
+        // Mover la imagen de la ruta temporal a una ruta fisica especifica
+        if (move_uploaded_file($_FILES['foto']['tmp_name'],$directorio . $_FILES['foto']['name'])) {
+            $imagen_url = $_FILES['foto']['name'];
+        } else {
+            $response = array(
+                'resp' => error_get_last()
+            );
+        }
+
+        
+        $opciones = array(
+            'cost' => 12
+        );
+
+        $encriptada = password_hash($contrasena,PASSWORD_BCRYPT, $opciones);
+
+        try {
+
+            if ($_FILES['foto']['size'] > 0) {
+
+                if (!empty($_POST['contrasena'])) {
+                    $stmt = $conn -> prepare("Update Usuarios set Nombre = ?, ApellidoPaterno = ?, ApellidoMaterno = ?,
+                                            Correo = ?, Contraseña = ?, FechaCumpleaños = ?, foto = ?, idTipo = ?
+                                            where idUsuario = ?;");
+
+                    $stmt->execute([$nombre, $apaterno, $amaterno, $correo, $encriptada, $cumpleanios, $imagen_url, $tipo, $id]);
+                } else {
+
+                    $stmt = $conn -> prepare("Update Usuarios set Nombre = ?, ApellidoPaterno = ?, ApellidoMaterno = ?,
+                    Correo = ?, FechaCumpleaños = ?, foto = ?, idTipo = ?
+                    where idUsuario = ?;");
+
+                    $stmt->execute([$nombre, $apaterno, $amaterno, $correo, $cumpleanios, $imagen_url, $tipo, $id]);
+
+                }
+
+            } else {
+
+                if (!empty($_POST['contrasena'])) {
+                    $stmt = $conn -> prepare("Update Usuarios set Nombre = ?, ApellidoPaterno = ?, ApellidoMaterno = ?,
+                    Correo = ?, Contraseña = ?, FechaCumpleaños = ?, idTipo = ?
+                    where idUsuario = ?;");
+    
+                    $stmt->execute([$nombre, $apaterno, $amaterno, $correo, $encriptada, $cumpleanios, $tipo, $id]);
+                } else {
+                    $stmt = $conn -> prepare("Update Usuarios set Nombre = ?, ApellidoPaterno = ?, ApellidoMaterno = ?,
+                    Correo = ?, FechaCumpleaños = ?, idTipo = ?
+                    where idUsuario = ?;");
+    
+                    $stmt->execute([$nombre, $apaterno, $amaterno, $correo, $cumpleanios, $tipo, $id]);
+                }
+
+            }
+     
+             if($stmt->rowCount() != 0) {
+                 $response = array(
+                     'resp' => 'OK',
+                     'message' => "Se ha actualizado exitosamente",
+                     'url' => "lista-usuarios.php"
+                 );
+             } else {
+                 $response = array(
+                     'resp' => 'Error',
+                     'message' => "Hubo un error al intentar insertar el usuario",
+                     'url' => "lista-usuarios.php"
+                 );
+             }
+     
+        } catch (Exception $e) {
+         $response = array(
+             'resp' => 'Error',
+             'message' => $e,
+             'url' => "index.php"
+         );
+        }
+        
+        die(json_encode($response));
+    }
     
